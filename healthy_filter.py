@@ -21,8 +21,9 @@ for service in data.get("services", []):
         maintenance += 1
 
 data["services"] = healthy
+healthy_names = sorted([svc["name"] for svc in healthy])
 with open("healthy_services.json", "w") as f:
     json.dump(data, f, indent=2)
 
 print(f"Healthy: {len(healthy)}, Unhealthy: {unhealthy}, Maintenance:"f" {maintenance}")
-print("Healthy services: api-gateway, auth-svc, currency-service, fraud-scanner, ledger-svc, payment-gateway, statement-generator")
+print(f"Healthy services: {', '.join(healthy_names)}")
