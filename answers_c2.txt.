@@ -1,0 +1,20 @@
+1. Explain the difference between PUT and PATCH. One AeroPay situation where each is the right method.
+PUT replaces the mutable information of an existing service, while PATCH changes only the selected fields.
+In AeroPay, PUT can be used when replacing the complete service configuration, while PATCH is suitable when only changing something like the service status to maintenance.
+
+2. Why does idempotency matter when syncing a config file into a registry, and how did your sync_registry.py
+ensure it?
+Idempotency is important because the synchronization script may be run many times and should not create duplicate services.
+My sync script checks the service name first, then uses PATCH for an existing service and POST only when the service does not exist.
+
+3. For storing service config, give one strength and one weakness of each: JSON, YAML, XML.
+JSON is easy for programs to read and is widely supported, but it can become harder to read when the structure is large.
+YAML is easier for humans to read and edit, but indentation is important and syntax errors can cause problems. XML is structured and supports detailed tags, but it is more verbose than JSON or YAML.
+
+4. The registry replies 401, then 404, then 500. What does each mean, and what would you check first for each?
+A 401 means the request is not authorized, so I would first check the API key and the X-API-Key header.
+A 404 means the requested resource was not found, so I would check the service ID or endpoint. A 500 means a server-side error occurred, so I would first check the server and its logs.
+
+5. Why is a local mock API (like this one) useful during development, and one thing a mock cannot verify?
+A local mock API is useful because it lets developers test API requests and responses without depending on the real production service or the internet.
+A mock cannot fully verify real production behavior such as the actual server environment, real network conditions, or integrations with external systems.
